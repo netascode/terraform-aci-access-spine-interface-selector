@@ -3,14 +3,14 @@ version: '>= 0.14.0'
 formatter: markdown table
 
 content: |-
-  [![Tests](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
+  [![Tests](https://github.com/netascode/terraform-aci-access-spine-interface-selector/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-access-spine-interface-selector/actions/workflows/test.yml)
 
-  # Terraform ACI Scaffolding Module
+  # Terraform ACI Access Spine Interface Selector Module
 
-  Description
+  Manages ACI Access Spine Interface Selector
 
   Location in GUI:
-  `Tenants` » `XXX`
+  `Fabric` » `Access Policies` » `Interfaces` » `Spine Interfaces` » `Profiles` » `XXX`
 
   ## Examples
 

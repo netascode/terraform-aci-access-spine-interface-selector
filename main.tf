@@ -1,4 +1,4 @@
-resource "aci_rest" "infraSHPortS" {
+resource "aci_rest_managed" "infraSHPortS" {
   dn         = "uni/infra/spaccportprof-${var.interface_profile}/shports-${var.name}-typ-range"
   class_name = "infraSHPortS"
   content = {
@@ -7,18 +7,18 @@ resource "aci_rest" "infraSHPortS" {
   }
 }
 
-resource "aci_rest" "infraRsSpAccGrp" {
+resource "aci_rest_managed" "infraRsSpAccGrp" {
   count      = var.policy_group != null ? 1 : 0
-  dn         = "${aci_rest.infraSHPortS.dn}/rsspAccGrp"
+  dn         = "${aci_rest_managed.infraSHPortS.dn}/rsspAccGrp"
   class_name = "infraRsSpAccGrp"
   content = {
     tDn = "uni/infra/funcprof/spaccportgrp-${var.policy_group}"
   }
 }
 
-resource "aci_rest" "infraPortBlk" {
+resource "aci_rest_managed" "infraPortBlk" {
   for_each   = { for block in var.port_blocks : block.name => block }
-  dn         = "${aci_rest.infraSHPortS.dn}/portblk-${each.value.name}"
+  dn         = "${aci_rest_managed.infraSHPortS.dn}/portblk-${each.value.name}"
   class_name = "infraPortBlk"
   content = {
     name     = each.value.name

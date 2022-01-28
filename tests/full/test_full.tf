@@ -5,13 +5,13 @@ terraform {
     }
 
     aci = {
-      source  = "netascode/aci"
-      version = ">=0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">=2.0.0"
     }
   }
 }
 
-resource "aci_rest" "infraSpAccPortP" {
+resource "aci_rest_managed" "infraSpAccPortP" {
   dn         = "uni/infra/spaccportprof-SPINE1001"
   class_name = "infraSpAccPortP"
 }
@@ -19,7 +19,7 @@ resource "aci_rest" "infraSpAccPortP" {
 module "main" {
   source = "../.."
 
-  interface_profile = aci_rest.infraSpAccPortP.content.name
+  interface_profile = aci_rest_managed.infraSpAccPortP.content.name
   name              = "1-2"
   policy_group      = "ACC1"
   port_blocks = [{
@@ -30,7 +30,7 @@ module "main" {
   }]
 }
 
-data "aci_rest" "infraSHPortS" {
+data "aci_rest_managed" "infraSHPortS" {
   dn = "uni/infra/spaccportprof-SPINE1001/shports-${module.main.name}-typ-range"
 
   depends_on = [module.main]
@@ -41,19 +41,19 @@ resource "test_assertions" "infraSHPortS" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.infraSHPortS.content.name
+    got         = data.aci_rest_managed.infraSHPortS.content.name
     want        = module.main.name
   }
 
   equal "type" {
     description = "type"
-    got         = data.aci_rest.infraSHPortS.content.type
+    got         = data.aci_rest_managed.infraSHPortS.content.type
     want        = "range"
   }
 }
 
-data "aci_rest" "infraRsSpAccGrp" {
-  dn = "${data.aci_rest.infraSHPortS.id}/rsspAccGrp"
+data "aci_rest_managed" "infraRsSpAccGrp" {
+  dn = "${data.aci_rest_managed.infraSHPortS.id}/rsspAccGrp"
 
   depends_on = [module.main]
 }
@@ -63,13 +63,13 @@ resource "test_assertions" "infraRsSpAccGrp" {
 
   equal "tDn" {
     description = "tDn"
-    got         = data.aci_rest.infraRsSpAccGrp.content.tDn
+    got         = data.aci_rest_managed.infraRsSpAccGrp.content.tDn
     want        = "uni/infra/funcprof/spaccportgrp-ACC1"
   }
 }
 
-data "aci_rest" "infraPortBlk" {
-  dn = "${data.aci_rest.infraSHPortS.id}/portblk-PB1"
+data "aci_rest_managed" "infraPortBlk" {
+  dn = "${data.aci_rest_managed.infraSHPortS.id}/portblk-PB1"
 
   depends_on = [module.main]
 }
@@ -79,37 +79,37 @@ resource "test_assertions" "infraPortBlk" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.infraPortBlk.content.name
+    got         = data.aci_rest_managed.infraPortBlk.content.name
     want        = "PB1"
   }
 
   equal "descr" {
     description = "descr"
-    got         = data.aci_rest.infraPortBlk.content.descr
+    got         = data.aci_rest_managed.infraPortBlk.content.descr
     want        = "My Description"
   }
 
   equal "fromCard" {
     description = "fromCard"
-    got         = data.aci_rest.infraPortBlk.content.fromCard
+    got         = data.aci_rest_managed.infraPortBlk.content.fromCard
     want        = "1"
   }
 
   equal "fromPort" {
     description = "fromPort"
-    got         = data.aci_rest.infraPortBlk.content.fromPort
+    got         = data.aci_rest_managed.infraPortBlk.content.fromPort
     want        = "1"
   }
 
   equal "toCard" {
     description = "toCard"
-    got         = data.aci_rest.infraPortBlk.content.toCard
+    got         = data.aci_rest_managed.infraPortBlk.content.toCard
     want        = "1"
   }
 
   equal "toPort" {
     description = "toPort"
-    got         = data.aci_rest.infraPortBlk.content.toPort
+    got         = data.aci_rest_managed.infraPortBlk.content.toPort
     want        = "2"
   }
 }

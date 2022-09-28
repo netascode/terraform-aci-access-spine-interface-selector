@@ -33,8 +33,8 @@ variable "port_blocks" {
   description = "List of port blocks. Allowed values `from_module`, `to_module`: 1-9. Default value `from_module`, `to_module`: 1. Allowed values `from_port`, `to_port`: 1-127. Default value `to_port`: `from_port`."
   type = list(object({
     name        = string
-    description = optional(string)
-    from_module = optional(number)
+    description = optional(string, "")
+    from_module = optional(number, 1)
     to_module   = optional(number)
     from_port   = number
     to_port     = optional(number)

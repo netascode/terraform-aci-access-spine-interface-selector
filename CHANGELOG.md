@@ -1,6 +1,6 @@
 ## 0.2.1
 
-- Allow `:`in name attributes
+- Allow `:` character in name attributes
 
 ## 0.2.0
 
